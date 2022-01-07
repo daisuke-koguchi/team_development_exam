@@ -14,8 +14,12 @@ class TeamsController < ApplicationController
   def new
     @team = Team.new
   end
-
-  def edit; end
+  #team.owner以外はshow画面にredirectされるように設定する
+  def edit
+    if @team.owner != current_user
+      redirect_to team_path(@team) ,notice: I18n.t('views.messages.cannot_edit_except_reader')
+    end
+  end
 
   def create
     @team = Team.new(team_params)
