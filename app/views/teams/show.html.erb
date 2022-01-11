@@ -44,7 +44,6 @@
                       <td><%= link_to I18n.t('views.button.delete'), team_assign_path(@team, assign), method: :delete, class: 'btn btn-sm btn-danger' %></td>
                       <%# 権限移動ボタンをここに設置 %>
                       <% if @team.owner == current_user && @team.owner_id != assign.user_id %>
-                      <% binding.pry%>
                         <td><%= link_to "権限移動", move_leader_team_path(@team, assign_id: assign.id), method: :patch, class: 'btn btn-sm btn-success'%></td>
                       <% end %>
                       <%#  %>
