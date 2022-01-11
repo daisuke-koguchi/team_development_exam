@@ -1,6 +1,6 @@
 class TeamsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_team, only: %i[show edit update destroy]
+  before_action :set_team, only: %i[show edit update destroy move_leader]
 
   def index
     @teams = Team.all
@@ -22,7 +22,7 @@ class TeamsController < ApplicationController
     @team.owner = current_user
     if @team.save
       @team.invite_member(@team.owner)
-      redirect_to @team, notice: I18n.t('views.messages.create_team')
+      #redirect_to @team, notice: I18n.t('views.messages.create_team')
     else
       flash.now[:error] = I18n.t('views.messages.failed_to_save_team')
       render :new
@@ -41,6 +41,18 @@ class TeamsController < ApplicationController
   def destroy
     @team.destroy
     redirect_to teams_url, notice: I18n.t('views.messages.delete_team')
+  end
+
+  def move_leader
+    binding.pry
+    next_leader = Assign.find_by(id: params[:assign_id])
+    @team.owner_id = next_leader.user_id
+    if @team.update(team_params)
+      redirect_to @team, notice: "権限移動に成功しました"
+    else 
+      flash.now[:notice] = "権限移動失敗しました"
+      render :show
+    end 
   end
 
   def dashboard
