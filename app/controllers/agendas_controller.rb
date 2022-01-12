@@ -1,5 +1,5 @@
 class AgendasController < ApplicationController
-  # before_action :set_agenda, only: %i[show edit update destroy]
+   before_action :set_agenda, only: %i[destroy]
 
   def index
     @agendas = Agenda.all
@@ -21,8 +21,9 @@ class AgendasController < ApplicationController
     end
   end
 
-  def destroy 
-
+  def destroy
+    @agenda.destroy 
+    redirect_to dashboard_path
   end
 
   private
