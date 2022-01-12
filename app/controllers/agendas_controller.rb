@@ -1,5 +1,5 @@
 class AgendasController < ApplicationController
-   before_action :set_agenda, only: %i[destroy]
+  before_action :set_agenda, only: %i[destroy]
 
   def index
     @agendas = Agenda.all
@@ -14,6 +14,7 @@ class AgendasController < ApplicationController
     @agenda = current_user.agendas.build(title: params[:title])
     @agenda.team = Team.friendly.find(params[:team_id])
     current_user.keep_team_id = @agenda.team.id
+    binding.pry
     if current_user.save && @agenda.save
       redirect_to dashboard_url, notice: I18n.t('views.messages.create_agenda') 
     else
